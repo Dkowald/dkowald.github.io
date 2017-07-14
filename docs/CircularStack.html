@@ -7,7 +7,9 @@
     
         <meta name="keywords" value="gist, c#, Stack">
         <meta name="pubdate" value="2007-01-01">
-    
+        
+        <meta name="pageHits" value="10" >
+
         <link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="/css/stylesheet.css" media="screen">
@@ -21,9 +23,10 @@
         <h1>
             Circular Stack
         </h1>
-        <p>
-            Comments : <span itemprop="commentcount">3<span>
-            Hits : <span itemprop="pagehits">10</span>
+        <p itemscope itemtype=" http://schema.org/Blog">
+            Version : <span itemprop="version">1.0.0</span>
+            Comments : <span itemprop="commentCount">3<span>
+            Hits : <span itemprop="pagehits" property="dc:pageHits" >10</span>
         </p>
         <p> Needed a stack (FIFO) of messages to display on a site?
             But i didnt want the list to get too long?
