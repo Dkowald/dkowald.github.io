@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    
+    <meta name="pubdate" value="2007-01-01">
+
+    <title>Responsive helper classes</title>
+
+    
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/github-light.css" media="screen">
+
+<link rel="stylesheet" href="/res/site.css" type="text/css" />
+
+<script src="https://use.fontawesome.com/749b637e03.js"></script>
+    
+        <script type="text/javascript">
+        var appInsights=window.appInsights||function(config){
+            function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+            instrumentationKey: '1a99a37a-54bf-44bd-9a75-41688a59a832'
+        });
+
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+        
+    </script>
+
+</head>
+<body>
+
+<section class="page-header">
+    <h1 class="project-name">Code scraps</h1>
+    <h2 class="project-tagline">Derek Kowald Tech Blog</h2>
+    <p><a href="/" class="inverse" title="Home">
+        <i class="fa fa-home fa-3x" aria-hidden="true"></i>
+    </a></p>
+</section>
+<section class="main-content">
+    
+<section itemscope="itemscope" itemtype="http://schema.org/TechArticle">
+    <h1 itemprop="name">Responsive helper classes</h1>
+    <time itemprop="dateModified" datetime="2017-07-29T00:00:00">Saturday, July 29, 2017</time>
+    <p itemprop="about">
+        Using responsive breakpoint classes for fine control of content visibility.
+    </p>
+    <p itemprop="description">
+        Responsive sites use breakpoints to adjust display based on user device. Here I use 
+        these breakpoints as the basis for a set of css-classes. 
+        These classes make it easier to explicitly control content based on break-points.
+    </p>
+    <p>
+        These helper classes allowing me to not only express
+        <ol>
+            <li><i>content to hide on small displays</i>, but also;</li>
+            <li>
+                <i>content to hide on too large a display</i> and
+            </li>
+            <li>
+                <i>content to show only for specific range of display widths</i>       
+            </li>
+        </ol>
+    </p>
+    <p>
+        <a href="https://gist.github.com/Dkowald/d7d1aa26a767febfe5ac9771b59c8194">goto Gist</a>
+    </p>
+
+</section>
+
+<section>
+    <h2>Describe Devices</h2>
+    <p>Using <a>Semantic-UI</a> as a sample, I define a set of breakpoint widths</p>
+    <pre class="prettyprint lang-less">
+// -- mobile before here
+@mobileBreakpoint: 320px;
+//--- tablet in here ---
+@tabletBreakpoint: 768px;
+//--- laptop in here ---
+@desktopBreakpoint: 992px;
+//-- desktop in here --
+@largeMonitorBreakpoint: 1200px;
+//-- wide screen in here --
+@widescreenMonitorBreakpoint: 1920px;
+//-- tv after here.
+</pre>
+</section>
+<section>
+    <h2>Check which breakpoint</h2>
+    <i class="breakAt showText"></i>
+    <p>
+        To help readability, define a device class that sits within these ranges.
+        The indicator above shows the current device class.
+    </p>
+    <p>
+        As an example, here I've described a <strong>Laptop</strong> as 
+    </p>
+    <pre class="prettyprint lang-less">
+/**Simple style to show current break-point*/
+.breakAt{}
+
+/**Break laptop as between tablet and computer*/
+@media screen and (min-width:@tabletBreakpoint) and (max-width:@desktopBreakpoint) 
+  {
+    /*laptop width*/
+    .breakAt::after{content:' Laptop'}
+  }
+</pre>
+    <aside>
+        (Resize this page to see the indicator change.)
+    </aside>
+</section>
+<section>
+    <h2>Limit by smaller</h2>
+    <p>
+        Responsive is used to remove content when the display is limited (too small).
+        so, lets add a style to hide content if display smaller than <b>tablet</b>.
+    </p>
+    
+    <pre class="prettyprint land-less">
+@media screen and (min-width:@tabletBreakpoint) and (max-width:@desktopBreakpoint) 
+  {
+    .breakAt::after{content:'Laptop'}
+
+    /**too big*/
+    .tableOrSmaller, .mobileOrSmaller{display:'none'}
+  }
+</pre>
+    <p class="tabletOrSmaller">
+        This only shows if tablet or smaller.
+    </p>
+</section>
+<section>
+    <h2>Limit by bigger</h2>
+    <p>
+        In a similar way, we can hide if too big.
+        Normally if width is bigger, I'm not interested in 'hiding' stuff, but I wanted styles that give me fine control.
+        So, add a <b>desktopOrBigger</b> : show only if at desktop or bigger width.
+    </p>
+    <pre>
+@media screen and (min-device-width:@mobileBreakpoint) and (max-width:@tabletBreakpoint){
+  
+  .breakAt::after{content:'Tablet'}
+
+  /**too small*/
+  .desktopOrBigger {display:none}
+}
+</pre>
+    <p class="desktopOrBigger">
+        *This only shows on desktop or bigger
+    </p>
+</section>
+
+<section>
+    <h2>Limit in range</h2>
+    <p>With this basic pattern, I define visibility for other section, such as <b>desktop</b> </p>
+    <pre>
+@media screen and (min-width:@desktopBreakpoint) and (max-width:@largeMonitorBreakpoint)
+{
+  /**desktop size*/
+  .breakAt::after{content:'desktop'}
+
+  /**bigger*/
+  .widescreenOrBigger, .tvOrBigger {display: none;}
+
+  /**smaller*/
+  .laptopOrSmaller, .tabletOrSmaller, .mobileOrSmaller {display:none;}
+}
+</pre>
+    <p>
+        Now I can limit by a 'range'.
+    </p>
+    <p>
+        So if i have content only for laptop I can express <b>Laptop only</b> using:
+        <i>laptopOrSmaller</i> and <i>laptopOrBigger</i>
+    </p>
+    <pre class="prettyprint">
+&lt;p class="laptopOrSmaller laptopOrBigger"&gt;This only on laptop&lt;/p&gt;
+</pre>
+    
+    <p class="laptopOrSmaller laptopOrBigger">This only for laptop</p>
+</section>
+
+<section>
+    <h2>Putting it all together <i class="breakAt showText"></i></h2>
+    <p>
+        I can now visualize which content will be shown with *Bigger or *Smaller class's
+    </p>
+    <div>
+        <style>
+            .fa.on {
+                color: darkgreen;
+            }
+            .off {
+                color: grey;
+            }
+        </style>
+        <h3>Bigger</h3>
+        <span class="mobileOrBigger"><i class="on fa fa-3x fa-mobile"></i></span>
+        
+        <span class="tabletOrBigger"><i class="on fa fa-3x fa-tablet"></i></span>
+        <span class="mobileOrSmaller"><i class="off fa fa-3x fa-tablet"></i></span>
+
+        <span class="laptopOrBigger"><i class="on fa fa-3x fa-laptop"></i></span>
+        <span class="tabletOrSmaller"><i class="off fa fa-3x fa-laptop"></i></span>
+
+        <span class="desktopOrBigger"><i class="on fa fa-3x fa-keyboard-o"></i></span>
+        <span class="laptopOrSmaller"><i class="off fa fa-3x fa-keyboard-o"></i></span>
+
+        <span class="widescreenOrBigger"><i class="on fa fa-3x fa-desktop" ></i></span>
+        <span class="desktopOrSmaller"><i class="off fa fa-3x fa-desktop"></i></span>
+
+        <span class="tvOrBigger"><i class="on fa fa-3x fa-television"></i></span>
+        <span class="widescreenOrSmaller"><i class="off fa fa-3x fa-television"></i></span>
+    </div>
+    
+    <div>
+        <h3>Smaller</h3>
+        <span class="mobileOrSmaller"><i class="on fa fa-2x fa-mobile"></i></span>
+        <span class="tabletOrBigger"><i class="off fa fa-2x fa-mobile"></i></span>
+
+        <span class="tabletOrSmaller"><i class="on fa fa-2x fa-tablet"></i></span>
+        <span class="laptopOrBigger"><i class="off fa fa-2x fa-tablet"></i></span>
+
+        <span class="laptopOrSmaller"><i class="on fa fa-2x fa-laptop"></i></span>
+        <span class="desktopOrBigger"><i class="off fa fa-2x fa-laptop"></i></span>
+
+        <span class="desktopOrSmaller"><i class="on fa fa-2x fa-keyboard-o"></i></span>
+        <span class="widescreenOrBigger"><i class="off fa fa-2x fa-keyboard-o"></i></span>
+
+        <span class="widescreenOrSmaller"><i class="on fa fa-2x  fa-desktop"></i></span>
+        <span class="tvOrBigger"><i class="off fa fa-2x  fa-desktop"></i></span>
+
+        <span class="tvOrSmaller"><i class="on fa fa-2x fa-television"></i></span>
+    </div>
+    
+    <p>And toggle display based on current breakpoint</p>
+    <div style="padding: 1em;">
+
+        <p>
+            <span class="desktopOrBigger desktopOrSmaller">
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span>
+            <span class="laptopOrSmaller">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            <span class="widescreenOrBigger">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            Desktop only
+        </p>
+        <p>
+            <span class="laptopOrBigger desktopOrSmaller">
+                <i class="fa fa-check" aria-hidden="true"></i>
+            </span>
+            <span class="tabletOrSmaller">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            <span class="widescreenOrBigger">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            Laptop and desktop
+        </p>
+    </div>
+
+</section>
+
+    
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.url = "https://dkowald.github.io/docs/Gists/ResponsiveHelpers.html";
+        this.page.identifier = "ResponsiveHelpers";
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://dkowald.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
+</section>
+
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+<script src="/res/site.js"></script>
+
+
+</body>
+</html>
