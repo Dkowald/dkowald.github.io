@@ -1,0 +1,287 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    
+    <meta name="pubdate" value="2007-01-01">
+
+    <title>Refactoring with C# 7 out var and value tuples</title>
+
+    
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/github-light.css" media="screen">
+
+<link rel="stylesheet" href="/res/site.css" type="text/css" />
+
+<script src="https://use.fontawesome.com/749b637e03.js"></script>
+    
+        <script type="text/javascript">
+        var appInsights=window.appInsights||function(config){
+            function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+            instrumentationKey: '1a99a37a-54bf-44bd-9a75-41688a59a832'
+        });
+
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+        
+    </script>
+
+</head>
+<body>
+
+<section class="page-header">
+    <h1 class="project-name">Code scraps</h1>
+    <h2 class="project-tagline">Derek Kowald Tech Blog</h2>
+    <p><a href="/" class="inverse" title="Home">
+        <i class="fa fa-home fa-3x" aria-hidden="true"></i>
+    </a></p>
+</section>
+<section class="main-content">
+    
+<section itemscope itemtype="http://schema.org/TechArticle">
+    <h1 itemprop="name">Refactoring with C# 7 out var and value tuples</h1>
+    <time itemprop="dateModified" datetime="2017-08-05T00:00:00">Saturday, August 5, 2017</time>
+    <p itemprop="about">
+        C# 7 refactoring with value tuple's
+    </p>
+    <p itemprop="description">
+        A sample on using C# 7 out var and value tuples to improve readability in MVC code.
+    </p>
+    <p>
+        <a href="https://docs.microsoft.com/en-gb/dotnet/csharp/whats-new/csharp-7">C# 7</a>
+        introduces a number of new features. 
+        The new throw expression and local function quickly found there way into my code style. 
+        But, until now, I hadn't found much use for <strong>out var</strong> or <strong>value tuple</strong>'s.
+    </p>
+    <p>
+        While working on some MVC code; I've got my first 'real-world' re-factor for value tuple's.
+    </p>
+</section>
+
+<section>
+    <h2>A sample action</h2>
+    <p>
+        In MVC controller action's I often find a pattern where input is used with a service
+        to get a domain object.
+    </p>
+    <pre class="prettyprint lan-cs">
+public class Demo : Controller
+{
+  //some service, obviously use IoC to inject it.
+  public interface IRepository {object Get(string id);}
+  private IRepository _repository;
+
+  //some Error view, when there is a problem.
+  public IActionResult Error() => View();
+
+  //the actual useful endpoint.
+  public IActionResult Get(string id)
+  {
+    //try: get from storage, redirect to error if fail.
+    var item = _repository.Get(id);
+    if (item == null) //if failed
+    {
+      //setup for error info to user
+      TempData["ERROR"] = $"Invalid ID {id}";
+      //report error info
+      return RedirectToAction(nameof(Error));
+    }
+
+    //Other work on my domain object...
+    
+    return View(item);
+    }
+}
+</pre>
+    <p> The rest of the code will continue on with a similar 
+        try something; if fail setup error info for user, go to error.
+    </p>
+</section>
+
+<section>
+    <h2>Re factor with out var</h2>
+    <p>
+        This code feels readable, but as the method grows, the 
+        'setup for error' block(s) detract from easily reading the main flow in the method.
+    </p>
+    <p>
+        So, lets re-factor with a out var, see if we cant get a little more readability.
+    </p>
+    <pre class="prettyprint">
+public class Demo : Controller
+{
+  public IActionResult Get(string id)
+  {
+    //use out-var to encapsulate error. 
+    var item = TryGet(id, out var errorResult);
+    if(item == null){return errorResult;}
+
+    //Other work on my domain object...
+    
+    return View(item);
+  }
+
+  private object TryGet(string id, out IActionResult errorResult)
+  {
+    var item = _repository.Get(id);
+    errorResult = null;
+    if (item == null) {
+      TempData["ERROR"] = $"Invalid ID {id}";
+      errorResult = RedirectToAction(nameof(Error));
+    }
+
+    return item;
+  }
+}
+</pre>
+    <p>
+        So... nice!
+        To my eye, the main <strong>Get</strong> now reads more clearly.
+        I'm not distracted with 'what the erroResult' is.
+    </p>
+    <p>
+        But, after years of coding, It doesn't feel natural to look at the method parameters to
+        see a return value. Its not OMG! terrible, but it is a little unnatural. 
+        Methods take parameters, and return results, not very often that I 'take a return parameters'.
+    </p>
+</section>
+
+<section>
+    <h2>Re-factor with value tuples</h2>
+    <p>
+        Although the <strong>out var</strong> re-factor improves the readability, the niggling
+        'out parameter' just doesn't sit well.
+    </p>
+    <p>
+        Swapping to <strong>value tuple</strong> for a more natural feel.
+    </p>
+    <pre class="prettyprint">
+public class Demo : Controller
+{
+  public IActionResult Get(string id)
+  {
+    (var item, var errorResult) = TryGet(id);
+    if(item == null){return errorResult;}
+
+    //Other work on my domain object...
+    
+    return View(item);
+  }
+
+  private (object item, IActionResult errorResult) TryGet(string id)
+  {
+    var item = _repository.Get(id);
+    IActionResult errorResult = null;
+    if (item == null) {
+      TempData["ERROR"] = $"Invalid ID {id}";
+      errorResult = RedirectToAction(nameof(Error));
+    }
+
+    return (item, errorResult);
+  }
+}
+</pre>
+    <div style="display: flex; flex-direction: row">
+    <p>
+        Yep, I like that more. Now I have an unnatural 'multiple return', but the de-structuring
+        sits OK with me, particularly since it feel 'JavaScripty'.
+    </p>
+        <aside style="flex-grow: .5;">
+            <i class="fa fa-sticky-note" aria-hidden="true"></i>
+            Add the <strong>
+                <a href="https://www.nuget.org/packages/System.ValueTuple/">System.ValueTuple</a>
+            </strong> package for this.
+        </aside>
+    </div>
+</section>
+
+<section>
+    <h2>Re-factor the re-factor</h2>
+    <p>
+        Renaming in the de-structuring is a nice touch, my caller can use variable names that
+        make sense in its context; whilst the <strong>TryGet</strong> uses names that make sense to it.
+    </p>
+    <p>
+        I opted to include a <strong>hasError</strong> in the return; but this breaks the caller.
+        To fix, the caller adds a discard <strong>,_</strong> to indicate it knows about the value, but doesn't care.
+    </p>
+    <pre class="prettyprint">
+public class Demo : Controller
+{
+  public IActionResult Get(string id)
+  {
+    //use discards to ignore the extra.
+    (var item, var errorResult, _) = TryGet(id);
+    if(item == null){return errorResult;}
+
+    //Other work on my domain object...
+    
+    return View(item);
+  }
+
+  //add hasError to result. 
+  private (object result, IActionResult errorResult, bool hasError) TryGet(string id)
+  {
+    var result = _repository.Get(id);
+    IActionResult errorResult = null;
+    if (result == null) {
+      TempData["ERROR"] = $"Invalid ID {id}";
+      errorResult = RedirectToAction(nameof(Error));
+    }
+
+    return (result, errorResult, result == null);
+  }
+}
+</pre>
+</section>
+<section>
+    <h2>In closing</h2>
+    <p>
+        It will take time to adjust to reading this style; but it's starting to feel more natural already.
+        The real test will be when I start getting code-review comments from others:
+    </p>
+    <p>
+        One developers <i>readable</i> is another's <i>WTF?</i>.
+    </p>
+    <p>
+        The only weakness I've found is handling addition of properties on the returned tuple.
+        It would be nice if I could express '<i>ignore the remainder</i>' with de-structuring.
+        Something similar to <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Rest_in_Object_Destructuring">
+            JavaScript rest in destructuring</a>.
+        That way my call to <strong>TryGet</strong> wouldn't need to be updated if I add
+        some return data.
+    </p>
+</section>
+    
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.url = "https://dkowald.github.io/docs/CodeStyle/ValueTuples.html";
+        this.page.identifier = "ValueTuples";
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://dkowald.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
+</section>
+
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+<script src="/res/site.js"></script>
+
+
+</body>
+</html>
