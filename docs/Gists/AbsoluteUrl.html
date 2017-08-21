@@ -6,7 +6,7 @@
     
     <meta name="pubdate" value="2007-01-01">
 
-    <title>Gist - CircularStack</title>
+    <title>MVC 6 Absolute URLs</title>
 
     
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -41,32 +41,68 @@
     </a></p>
 </section>
 <section class="main-content">
-    <section itemscope itemtype="http://schema.org/TechArticle">
-    <h1 itemprop="name">Gist - CircularStack</h1>
-    <time itemprop="dateModified" datetime="2017-06-15T00:00:00">Thursday, June 15, 2017</time>
+    
+<section itemscope="http://schema.org/TechArticle" itemtype="http://schema.org/TechArticle">
+    <h1 itemprop="name">MVC 6 Absolute URLs</h1>
+    <time itemprop="dateModified" datetime="2017-08-13T00:00:00">Sunday, August 13, 2017</time>
     <p itemprop="about">
-        A length limited stack in C#
+        URL helpers for absolute url's
+    </p>
+    <p itemprop="description">
+        A set of extensions to simplify creating absolute URL's in Razor,
+    </p>
+</section>
+
+<section>
+    <p>
+        The MVC <a href="https://docs.microsoft.com/en-us/aspnet/core/api/microsoft.aspnetcore.mvc.iurlhelper">IUrlHelper</a>
+        is often used in Razor to create links to other Action / Routes in an MVC application.
+    </p>
+    <pre class="prettyprint">
+    @*Get the url for MyController.Index*@
+    @Url.Action("Demo", "MyController")
+    @*Returns /MyController/Demo*@
+</pre>
+    <p>
+        The help creates site relative URL paths. The sample above produces
+        <b>/MyController/Demo</b>
+        If you want an actual absolute URL; the easiest way is to provide the protocol as part of the call
+    </p>
+    <p>
+        Sometimes, you may really want the absolute URL.
+        As per <a href="https://stackoverflow.com/questions/434604/how-do-i-find-the-absolute-url-of-an-action-in-asp-net-mvc">Stack Overflow</a>
+        and <a href="https://www.captaincodeman.com/2010/02/03/absolute-urls-using-mvc-without-extension-methods">
+            Captain Codeman
+        </a>
+    </p>
+    <pre class="prettyprint">
+    @Url.Action("Demo", "MyController", null, Context.Request.Scheme, null)
+</pre>
+    <p>
+        Gives me a full URL such as 
+        <b>http://localhost:1212/MyController/Demo</b>
     </p>
     
+    <p>
+        To make this a little easier, 
+        <a href="https://gist.github.com/Dkowald/383acd462242194024981fbe53a84980">here's a gist</a>
+        with overloads for 
+        <b>Url.ActionAbsolute</b> and <b>Url.RouteUrlAbsolute</b>
+        To use these, just add <i>Absolute</i> to the call
+    </p>
+    <pre class="prettyprint">
+    @using kwd.gist
+
+    @Url.ActionAbsolute("Demo", "MyController")
+</pre>
 </section>
-<p>
-    Need a stack (FIFO), but want to limit its length?
-</p>
-<p>
-    This simple <a href="https://gist.github.com/Dkowald/5e6c53d058a02fb4ee5a972e63c3b933">
-        circular stack </a> gist might help.
-</p>
-
-<script src="https://gist.github.com/Dkowald/5e6c53d058a02fb4ee5a972e63c3b933.js"></script>
-
-
     
 
 <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
-        this.page.url = "https://dkowald.github.io/docs/Gists/CircularStack.html";
-        this.page.identifier = "CircularStack";
+        this.page.url = "https://dkowald.github.io/docs/Gists/AbsoluteUrl.html";
+        this.page.identifier = "AbsoluteUrl";
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
