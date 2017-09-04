@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width"/>
+    
+    <meta name="pubdate" value="2007-01-01">
+
+    <title>POCO ASP.NET Core controllers</title>
+
+    
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/github-light.css" media="screen">
+
+<link rel="stylesheet" href="/res/site.css" type="text/css" />
+
+<script src="https://use.fontawesome.com/749b637e03.js"></script>
+    
+        <script type="text/javascript">
+        var appInsights=window.appInsights||function(config){
+            function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
+        }({
+            instrumentationKey: '1a99a37a-54bf-44bd-9a75-41688a59a832'
+        });
+
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+        
+    </script>
+
+</head>
+<body>
+
+<section class="page-header">
+    <h1 class="project-name">Code scraps</h1>
+    <h2 class="project-tagline">Derek Kowald Tech Blog</h2>
+    <p><a href="/" class="inverse" title="Home">
+        <i class="fa fa-home fa-3x" aria-hidden="true"></i>
+    </a></p>
+</section>
+<section class="main-content">
+    
+<section itemscope="itemscope" itemtype="http://schema.org/TechArticle">
+    <h1 itemprop="name">POCO ASP.NET Core controllers</h1>
+    <time itemprop="dateModified" datetime="2017-09-01T00:00:00">Friday, September 1, 2017</time>
+    <p itemprop="about">
+        Using POCO Controllers with ASP.NET Core v2
+    </p>
+    <p itemprop="description">
+        Notes and sample code to help convert a MVC controller to a POCO controller.
+        This sample built against the latest (ASp.NET Core v2) MVC version.
+    </p>
+    <p>
+        <a href="https://gist.github.com/Dkowald/380d8b9ba3ff1818ea341877ac36aa7a">goto Gist</a>
+    </p>
+
+</section>
+
+    <section>
+        <h2>Why use POCO Controllers</h2>
+        <p>
+            With POCO controllers, your code explicitly declares the services it depends upon.
+            The <a href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection">Asp.net core docs</a>
+            describe the value in injecting dependencies.
+        </p>
+        <p>
+            Often, developers inherit from the base
+            <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions#what-is-a-controller">Controller</a>,
+            rather than injecting the required services. Looking around to find more data on POCO controllers, I mostly found
+            references to earlier version of Asp.Net Core.
+        </p>
+        <p>
+            This is an outline of POCO controllers with the current (Asp.Net Core v2.0) version.
+        </p>
+    </section>
+
+    <section>
+        <h2>What services does the Controller base class provide</h2>
+        <p>
+            My goal is to inject services that satisfy all the currently available capabilities from the
+            Asp.NET Core base Controller class.
+        </p>
+        <div>
+            <h3>
+                Injected services
+            </h3>
+            <p>
+                The main service to inject is the IActionContextAccessor.
+                This is an 'Accessor' used to resolve the current Action context while processing a
+                request.
+            </p>
+            <p>
+                To use this; register the Accessor in Startup
+                <pre class="prettyprint">
+public partial class Startup
+{
+  public void ConfigureServices(IServiceCollection services)
+    {
+      services.AddSingleton&lt;IActionContextAccessor, ActionContextAccessor&gt;();
+    }
+}
+</pre>
+            </p>
+            <p>
+                The controller uses this Accessor for many of the services.
+                <pre class="prettyprint">
+public partial class PocoDemoController
+{
+  public PocoDemoController(
+    IActionContextAccessor ctxAccessor,
+  )
+  {
+    // Action context for current request
+    var ctx = ctxAccessor.ActionContext;
+    
+    //Get the bits my controller needs
+    
+    /**** From Microsoft.AspNetCore.Mvc.Core / ControllerBase.cs ****/
+    
+    HttpContext httpCtx = ctx.HttpContext;
+    
+    HttpRequest httpReqest = ctx.HttpContext.Reqest;
+    
+    HttpResponse httpResponse = ctx.HttpContext.Response;
+    
+    RouteData routeData = ctx.RouteData;
+    
+    ModelStateDictionary modelState = ctx.ModelState;
+    
+    ControllerContext controllerContext = new ControllerContext(ctx);
+    
+    IModelMetadataProvider metadataProvider = 
+         httpContext.RequestServices.GetService&lt;IModelMetadataProvider&gt;();
+    
+    IModelBinderFactory modelBinderFactory = 
+         httpContext.RequestServices.GetRequiredService&lt;IModelBinderFactory&gt;();
+    
+    IUrlHelper url = 
+         httpContext.RequestServices.GetRequiredService&lt;IUrlHelperFactory&gt;()
+         .GetUrlHelper(ctx);
+    
+    IObjectModelValidator objectValidator = 
+         httpContext.RequestServices.GetRequiredService&lt;IObjectModelValidator&gt;();
+    
+    ClaimsPrincipal user = httpContext.User;
+    
+    //A set of methods for creating IActionResult ...
+    //A set of methods for TryUpdateModel...
+    //A set of methods for TryValidateModel...
+    
+    /**** From Microsoft.AspNetCore.Mvc.Core / ControllerBase.cs ****/
+    
+    ViewDataDictionary viewData = new ViewDataDictionary(metadataProvider, modelState);
+    
+    ITempDataDictionary tempData =
+        httpContext.RequestServices.GetRequiredService&lt;ITempDataDictionaryFactory&gt;()
+          .GetTempData(httpContext);
+    
+    dynamic viewBag = new DynamicViewData(() =&gt; _viewData)
+    
+    //A set of methods for creating ViewResult ...
+    //A set of methods for creating PartialViewResult ...
+    //A set of methods for creating ViewComponentResult ...
+    //A set of methods for creating JsonResult ...
+    
+    //Implementations for IActionFilter
+    //Implementation for IAsyncActionFilter
+    //Implementation for IDisposable
+  }
+}
+</pre>
+            </p>
+
+            <p>
+                I've used a Service Locater pattern to resolve some services, these should be factored out and taken as
+                constructor dependencies.
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Hidden services in methods.</h2>
+        <p>
+            The base class(es) provide a number of controller methods.
+        </p>
+        <p>
+            Most of these methods are wrappers on corresponding *Result classes.
+            For example the <b>Redirect</b> method creates a <b>RedirectResult</b>.
+            But there are a couple of interesting cases.
+        </p>
+        <p>
+            The <b>TryValidateModel</b> uses a IObjectModelValidator to update the current
+            ModelState.
+        </p>
+        <p>
+            The <b>TryUpdateModel</b> method(s) use <b>CompositeValueProvider</b>  and
+            <b>ModelBindingHelper</b> utilities to convert request data to model.
+        </p>
+
+        <p>Below, I've listed the other methods, along with object they create</p>
+        <table class="ui striped table">
+            <tr>
+                <td colspan="2">ControllerBase</td>
+            </tr>
+            <tr>
+                <td>StatusCode</td>
+                <td>StatusCodeResult or ObjectResult</td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td>
+                    ContentResult (use MediaTypeHeaderValue for content type).
+                </td>
+            </tr>
+            <tr>
+                <td>NoContent</td>
+                <td>NoContentResult</td>
+            </tr>
+            <tr>
+                <td>Ok</td>
+                <td>OkObjectResult or OkResult</td>
+            </tr>
+            <tr>
+                <td>Redirect &amp; RedirectPermanent</td>
+                <td>RedirectResult</td>
+            </tr>
+            <tr>
+                <td>LocalRedirect &amp; LocalRedirectPermanent</td>
+                <td>LocalRedirectResult</td>
+            </tr>
+            <tr>
+                <td>RedirectToAction &amp; RedirectToActionPermanent</td>
+                <td>RedirectToActionResult (with IUrlHelper)</td>
+            </tr>
+            <tr>
+                <td>RedirectToRoute &amp; RedirectToRoutePermanent</td>
+                <td>RedirectToRouteResult (with IUrlHelper)</td>
+            </tr>
+            <tr>
+                <td>File</td>
+                <td>FileContentResult or FileStreamResult or VirtualFileResult</td>
+            </tr>
+            <tr>
+                <td>PhysicalFile</td>
+                <td>PhysicalFileResult</td>
+            </tr>
+            <tr>
+                <td>Unauthorized</td>
+                <td>UnauthorizedResult</td>
+            </tr>
+            <tr>
+                <td>NotFound</td>
+                <td>NotFoundResult</td>
+            </tr>
+            <tr>
+                <td>BadRequest</td>
+                <td>BadRequestResult or BadRequestObjectResult</td>
+            </tr>
+            <tr>
+                <td>Created</td>
+                <td>CreatedResult</td>
+            </tr>
+            <tr>
+                <td>Created</td>
+                <td>CreatedResult</td>
+            </tr>
+            <tr>
+                <td>CreatedAtAction</td>
+                <td>CreatedAtActionResult </td>
+            </tr>
+            <tr>
+                <td>CreatedAtRoute</td>
+                <td>CreatedAtRouteResult</td>
+            </tr>
+            <tr>
+                <td>Challenge</td>
+                <td>ChallengeResult</td>
+            </tr>
+            <tr>
+                <td>Forbid</td>
+                <td>ForbidResult</td>
+            </tr>
+            <tr>
+                <td>SignIn</td>
+                <td>SignInResult</td>
+            </tr>
+            <tr>
+                <td>SignOut</td>
+                <td>SignOutResult</td>
+            </tr>
+            <tr>
+                <td colspan="2">Controller</td>
+            </tr>
+            <tr>
+                <td>View</td>
+                <td>ViewResult</td>
+            </tr>
+            <tr>
+                <td>PartialView</td>
+                <td>
+                    PartialViewResult
+                </td>
+            </tr>
+            <tr>
+                <td>ViewComponent</td>
+                <td>ViewComponentResult</td>
+            </tr>
+            <tr>
+                <td>Json</td>
+                <td>JsonResult</td>
+            </tr>
+        </table>
+
+    </section>
+
+    
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.url = "https://dkowald.github.io/docs/Gists/PocoControllers.html";
+        this.page.identifier = "PocoControllers";
+    };
+
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://dkowald.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
+</section>
+
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
+<script src="/res/site.js"></script>
+
+
+</body>
+</html>
