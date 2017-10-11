@@ -6,7 +6,7 @@
     
     <meta name="pubdate" value="2007-01-01">
 
-    <title>MVC 6 Absolute URLs</title>
+    <title>MVC 6 Exception return</title>
 
     
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -42,58 +42,66 @@
 <section class="main-content">
     
 <section itemscope="http://schema.org/TechArticle" itemtype="http://schema.org/TechArticle">
-    <h1 itemprop="name">MVC 6 Absolute URLs</h1>
-    <time itemprop="dateModified" datetime="2017-08-13T00:00:00">Sunday, August 13, 2017</time>
+    <h1 itemprop="name">MVC 6 Exception return</h1>
+    <time itemprop="dateModified" datetime="2017-10-07T00:00:00">Saturday, October 7, 2017</time>
     <p itemprop="about">
-        URL helpers for absolute url's
+        Using exceptions to return non-success results in MVC 6
     </p>
     <p itemprop="description">
-        A set of extensions to simplify creating absolute URL's in Razor,
+        Earlier versions of MVC provided exceptions that could be used to 
+        return a HTTP error response. This was removed in later version(s).
     </p>
 </section>
 
 <section>
     <p>
-        The MVC <a href="https://docs.microsoft.com/en-us/aspnet/core/api/microsoft.aspnetcore.mvc.iurlhelper">IUrlHelper</a>
-        is often used in Razor to create links to other Action / Routes in an MVC application.
+        In old-school MVC to return a particular HTTP status result, code would raise the appropriate exception.
     </p>
-    <pre class="prettyprint">
-    @*Get the url for MyController.Index*@
-    @Url.Action("Demo", "MyController")
-    @*Returns /MyController/Demo*@
+    <p>
+        These special exceptions were then mapped to corresponding HTTP responses.
+    </p>
+    <p>
+        Agree; or dis-agree; MVC has removed this, in favor of controller methods with a IActionResult return.
+        The reasoning can be found <a href="https://github.com/aspnet/Mvc/issues/5507">in this MVC issue</a>.
+    </p>
+    <p>
+        I had a need to re-use the 'exception' approach. My approach is a little different from the others I found.
+    </p>
+    <p>
+        The HttpError Exception is created with the IActionResult to be used. Then a supporting ExceptionFilter simply applies
+        the result.
+    </p>
+    <p>
+        Using <a href="https://gist.github.com/Dkowald/380d8b9ba3ff1818ea341877ac36aa7a">the gist</a> is super simple.
+        Throw a kwd.gist.HttpError like so
+        <pre class="prettyprint">
+using kwd.gist;
+public class MyController : Controller
+{
+  public object MyAction() {
+    throw new HttpError(NotFound(&quot;I don&#x27;t have one of those&quot;));
+  }
+}
 </pre>
-    <p>
-        The help creates site relative URL paths. The sample above produces
-        <b>/MyController/Demo</b>
-        If you want an actual absolute URL; the easiest way is to provide the protocol as part of the call
-    </p>
-    <p>
-        Sometimes, you may really want the absolute URL.
-        As per <a href="https://stackoverflow.com/questions/434604/how-do-i-find-the-absolute-url-of-an-action-in-asp-net-mvc">Stack Overflow</a>
-        and <a href="https://www.captaincodeman.com/2010/02/03/absolute-urls-using-mvc-without-extension-methods">
-            Captain Codeman
-        </a>
-    </p>
-    <pre class="prettyprint">
-    @Url.Action("Demo", "MyController", null, Context.Request.Scheme, null)
+        And register the filter to handle it, Global filter is convenient.
+        <pre class="prettyprint">
+using kwd.gist;
+public class Startup
+{
+  public void ConfigureServices(IServiceCollection services) {
+    services.AddMvc(opt =&gt;{
+      opt.Filters.Add(new HttpErrorFilter());
+    });
+  }
+}
 </pre>
-    <p>
-        Gives me a full URL such as 
-        <b>http://localhost:1212/MyController/Demo</b>
+        So, the above example reports a HTTP <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#404">404</a>
+        rather than a nasty <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#500">500</a> internal server error.
     </p>
-    
     <p>
-        To make this a little easier, 
-        <a href="https://gist.github.com/Dkowald/383acd462242194024981fbe53a84980">here's a gist</a>
-        with overloads for 
-        <b>Url.ActionAbsolute</b> and <b>Url.RouteUrlAbsolute</b>
-        To use these, just add <i>Absolute</i> to the call
+        <a href="https://gist.github.com/Dkowald/380d8b9ba3ff1818ea341877ac36aa7a">get the Gist</a>
     </p>
-    <pre class="prettyprint">
-    @using kwd.gist
-
-    @Url.ActionAbsolute("Demo", "MyController")
-</pre>
+    <script src="https://gist.github.com/Dkowald/6414276f4e3745473c699c1941549710.js"></script>
 </section>
     
 
@@ -101,8 +109,8 @@
 <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
-        this.page.url = "https://dkowald.github.io/docs/Gists/AbsoluteUrl.html";
-        this.page.identifier = "AbsoluteUrl";
+        this.page.url = "https://dkowald.github.io/docs/Gists/MvcExceptionErrors.html";
+        this.page.identifier = "MvcExceptionErrors";
     };
 
     (function() { // DON'T EDIT BELOW THIS LINE
