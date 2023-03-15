@@ -33,8 +33,6 @@
 
 </head>
 <body>
-    
-    
 
 <section class="page-header">
     <h1 class="project-name">Code scraps</h1>
@@ -44,10 +42,12 @@
     </a></p>
 </section>
 
-    <section class="main-content">
-        <div>
+<section class="main-content">
+<div>
     <h3>Whats new</h3>
     <ol>
+        <li><time datetime="2023-03-15 00:00:00Z">Mar-15 2023</time>
+            Changing over to use <a href="">giscus</a> for comments</li>
         <li>
             
             <a href="/docs/Gists/MvcExceptionErrors.html">
@@ -117,8 +117,23 @@
     </ol>
 </div>
 
-        
-
+<!-- Giscus powered comments; backed by github discussions-->
+<script src="https://giscus.app/client.js"
+        data-repo="Dkowald/dkowald.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk2MDgzMDQzMQ=="
+        data-category="Comments"
+        data-category-id="DIC_kwDOA6Ay384CU4Ze"
+        data-mapping="url"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
 
 <div id="disqus_thread"></div>
 <script>
@@ -136,29 +151,12 @@
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
-    </section>
+</section>
 
     
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 
 <script src="/res/site.js"></script>
-
-<script src="https://giscus.app/client.js"
-        data-repo="Dkowald/dkowald.github.io"
-        data-repo-id="MDEwOlJlcG9zaXRvcnk2MDgzMDQzMQ=="
-        data-category="Comments"
-        data-category-id="DIC_kwDOA6Ay384CU4Ze"
-        data-mapping="url"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
     
 </body>
 </html>
