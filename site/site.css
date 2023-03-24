@@ -1,6 +1,8 @@
-* {
-  box-sizing: border-box;
+﻿* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
 body {
   padding: 0;
   margin: 0;
@@ -9,10 +11,12 @@ body {
   line-height: 1.5;
   color: #606c71;
 }
+
 img.medium-size {
   width: 45%;
   max-height: 20em;
 }
+
 a {
   color: #1e6bb8;
   text-decoration: none;
@@ -21,13 +25,15 @@ a:hover {
   text-decoration: underline;
 }
 a.inverse {
-  color: #b86b1e;
+  color: spin(#1e6bb8, 180);
 }
+
 iframe {
   border: none;
   width: 100%;
   background: transparent;
 }
+
 .btn {
   display: inline-block;
   margin-bottom: 1rem;
@@ -37,6 +43,8 @@ iframe {
   border-style: solid;
   border-width: 1px;
   border-radius: 0.3rem;
+  -webkit-transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+  -o-transition: color 0.2s, background-color 0.2s, border-color 0.2s;
   transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 .btn :hover {
@@ -45,9 +53,11 @@ iframe {
   background-color: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.3);
 }
+
 .btn + .btn {
   margin-left: 1rem;
 }
+
 @media screen and (min-width: 64em) {
   .btn {
     padding: 0.75rem 1rem;
@@ -75,8 +85,10 @@ iframe {
   color: #fff;
   text-align: center;
   background-color: #159957;
+  background-image: -o-linear-gradient(330deg, #155799, #159957);
   background-image: linear-gradient(120deg, #155799, #159957);
 }
+
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 3rem 2rem;
@@ -89,13 +101,14 @@ iframe {
 }
 @media screen and (max-width: 42em) {
   .page-header {
-    padding: 1rem .5rem;
+    padding: 1rem 0.5rem;
   }
 }
 .project-name {
   margin-top: 0;
   margin-bottom: 0.1rem;
 }
+
 @media screen and (min-width: 64em) {
   .project-name {
     font-size: 3.25rem;
@@ -116,6 +129,7 @@ iframe {
   font-weight: normal;
   opacity: 0.7;
 }
+
 @media screen and (min-width: 64em) {
   .project-tagline {
     font-size: 1.25rem;
@@ -134,23 +148,22 @@ iframe {
 .main-content :first-child {
   margin-top: 0;
 }
+
 .main-content img {
   max-width: 100%;
 }
-.main-content h1,
-.main-content h2,
-.main-content h3,
-.main-content h4,
-.main-content h5,
-.main-content h6 {
+
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: normal;
   color: #159957;
 }
+
 .main-content p {
   margin-bottom: 1em;
 }
+
 .main-content code {
   padding: 2px 4px;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -159,6 +172,7 @@ iframe {
   background-color: #f3f6fa;
   border-radius: 0.3rem;
 }
+
 .main-content pre {
   padding: 0.8rem;
   margin-top: 0;
@@ -170,6 +184,7 @@ iframe {
   border: solid 1px #dce6f0;
   border-radius: 0.3rem;
 }
+
 .main-content pre > code {
   padding: 0;
   margin: 0;
@@ -180,23 +195,25 @@ iframe {
   background: transparent;
   border: 0;
 }
+
 .main-content .highlight {
   margin-bottom: 1rem;
 }
+
 .main-content .highlight pre {
   margin-bottom: 0;
   word-break: normal;
 }
-.main-content .highlight pre,
-.main-content pre {
+
+.main-content .highlight pre, .main-content pre {
   padding: 0.8rem;
   overflow: auto;
   font-size: 0.9rem;
   line-height: 1.45;
   border-radius: 0.3rem;
 }
-.main-content pre code,
-.main-content pre tt {
+
+.main-content pre code, .main-content pre tt {
   display: inline;
   max-width: initial;
   padding: 0;
@@ -207,28 +224,30 @@ iframe {
   background-color: transparent;
   border: 0;
 }
-.main-content pre code:before,
-.main-content pre code:after,
-.main-content pre tt:before,
-.main-content pre tt:after {
+
+.main-content pre code:before, .main-content pre code:after, .main-content pre tt:before, .main-content pre tt:after {
   content: normal;
 }
-.main-content ul,
-.main-content ol {
+
+.main-content ul, .main-content ol {
   margin-top: 0;
 }
+
 .main-content blockquote {
   padding: 0 1rem;
   margin-left: 0;
   color: #819198;
   border-left: 0.3rem solid #dce6f0;
 }
+
 .main-content blockquote > :first-child {
   margin-top: 0;
 }
+
 .main-content blockquote > :last-child {
   margin-bottom: 0;
 }
+
 .main-content table {
   display: block;
   width: 100%;
@@ -236,27 +255,32 @@ iframe {
   word-break: normal;
   word-break: keep-all;
 }
+
 .main-content table th {
   font-weight: bold;
 }
-.main-content table th,
-.main-content table td {
+
+.main-content table th, .main-content table td {
   padding: 0.5rem 1rem;
   border: 1px solid #e9ebec;
 }
+
 .main-content dl {
   padding: 0;
 }
+
 .main-content dl dt {
   padding: 0;
   margin-top: 1rem;
   font-size: 1rem;
   font-weight: bold;
 }
+
 .main-content dl dd {
   padding: 0;
   margin-bottom: 1rem;
 }
+
 .main-content hr {
   height: 2px;
   padding: 0;
@@ -264,6 +288,7 @@ iframe {
   background-color: #eff0f1;
   border: 0;
 }
+
 @media screen and (min-width: 64em) {
   .main-content {
     max-width: 64rem;
@@ -289,13 +314,16 @@ iframe {
   margin-top: 2rem;
   border-top: solid 1px #eff0f1;
 }
+
 .site-footer-owner {
   display: block;
   font-weight: bold;
 }
+
 .site-footer-credits {
   color: #819198;
 }
+
 @media screen and (min-width: 64em) {
   .site-footer {
     font-size: 1rem;
@@ -311,20 +339,17 @@ iframe {
     font-size: 0.9rem;
   }
 }
+ol.article-list, ul.article-list {
+  min-height: 10em;
+}
+
 @media screen and (max-width: 320px) {
-  .tabletOrBigger,
-  .laptopOrBigger,
-  .desktopOrBigger,
-  .widescreenOrBigger,
-  .tvOrBigger {
+  .tabletOrBigger, .laptopOrBigger, .desktopOrBigger, .widescreenOrBigger, .tvOrBigger {
     display: none;
   }
 }
 @media screen and (min-width: 320px) and (max-width: 768px) {
-  .laptopOrBigger,
-  .desktopOrBigger,
-  .widescreenOrBigger,
-  .tvOrBigger {
+  .laptopOrBigger, .desktopOrBigger, .widescreenOrBigger, .tvOrBigger {
     display: none;
   }
   .mobileOrSmaller {
@@ -332,24 +357,18 @@ iframe {
   }
 }
 @media screen and (min-width: 768px) and (max-width: 992px) {
-  .desktopOrBigger,
-  .widescreenOrBigger,
-  .tvOrBigger {
+  .desktopOrBigger, .widescreenOrBigger, .tvOrBigger {
     display: none;
   }
-  .tabletOrSmaller,
-  .mobileOrSmaller {
+  .tabletOrSmaller, .mobileOrSmaller {
     display: none;
   }
 }
 @media screen and (min-width: 992px) and (max-width: 1200px) {
-  .widescreenOrBigger,
-  .tvOrBigger {
+  .widescreenOrBigger, .tvOrBigger {
     display: none;
   }
-  .laptopOrSmaller,
-  .tabletOrSmaller,
-  .mobileOrSmaller {
+  .laptopOrSmaller, .tabletOrSmaller, .mobileOrSmaller {
     display: none;
   }
 }
@@ -357,19 +376,12 @@ iframe {
   .tvOrBigger {
     display: none;
   }
-  .desktopOrSmaller,
-  .laptopOrSmaller,
-  .tabletOrSmaller,
-  .mobileOrSmaller {
+  .desktopOrSmaller, .laptopOrSmaller, .tabletOrSmaller, .mobileOrSmaller {
     display: none;
   }
 }
 @media screen and (min-width: 1920px) {
-  .widescreenOrSmaller,
-  .desktopOrSmaller,
-  .laptopOrSmaller,
-  .tabletOrSmaller,
-  .mobileOrSmaller {
+  .widescreenOrSmaller, .desktopOrSmaller, .laptopOrSmaller, .tabletOrSmaller, .mobileOrSmaller {
     display: none;
   }
 }
@@ -378,9 +390,10 @@ iframe {
 .breakAt:before {
   font-family: FontAwesome;
 }
+
 @media screen and (max-width: 320px) {
   .breakAt:before {
-    content: "\F10B";
+    content: "\f10b";
   }
   .breakAt.showText::after {
     content: " Mobile";
@@ -388,7 +401,7 @@ iframe {
 }
 @media screen and (min-width: 320px) and (max-width: 768px) {
   .breakAt:before {
-    content: "\F10A";
+    content: "\f10a";
   }
   .breakAt.showText::after {
     content: " Tablet";
@@ -396,7 +409,7 @@ iframe {
 }
 @media screen and (min-width: 768px) and (max-width: 992px) {
   .breakAt:before {
-    content: "\F109";
+    content: "\f109";
   }
   .breakAt.showText::after {
     content: " Laptop";
@@ -404,7 +417,7 @@ iframe {
 }
 @media screen and (min-width: 992px) and (max-width: 1200px) {
   .breakAt:before {
-    content: "\F11C";
+    content: "\f11c";
   }
   .breakAt.showText::after {
     content: " Desktop";
@@ -412,7 +425,7 @@ iframe {
 }
 @media screen and (min-width: 1200px) and (max-width: 1920px) {
   .breakAt:before {
-    content: "\F108";
+    content: "\f108";
   }
   .breakAt.showText::after {
     content: " Wide screen";
@@ -420,7 +433,7 @@ iframe {
 }
 @media screen and (min-width: 1920px) {
   .breakAt:before {
-    content: "\F26C";
+    content: "\f26c";
   }
   .breakAt.showText::after {
     content: " TV";
@@ -429,8 +442,7 @@ iframe {
 aside {
   background: beige;
   color: gray;
-  padding: .25em;
+  padding: 0.25em;
   text-align: center;
 }
-
-/*# sourceMappingURL=site.css.map*/
+/*# sourceMappingURL=_www\site\site.css.map */

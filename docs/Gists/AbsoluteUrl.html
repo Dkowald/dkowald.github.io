@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <meta name="pubdate" value="2007-01-01">
-
-    <title>MVC 6 Absolute URLs</title>
-
-    
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 
 <link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
 <link rel="stylesheet" type="text/css" href="/css/github-light.css" media="screen">
 
-<link rel="stylesheet" href="/res/site.css" type="text/css" />
+<link rel="stylesheet" href="/site/site.css" type="text/css" />
 
-<script src="https://use.fontawesome.com/749b637e03.js"></script>
+<script src="https://kit.fontawesome.com/ce6a7a476a.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js" defer></script>
+
+
+    <base href="/"/>
+
+        <meta name="pubdate" value="2017-08-13">
+
+    <title>MVC 6 Absolute URLs</title>
+
+    <script src="/sys.js"></script>
+
     
-
-        <script type="text/javascript">
-        var appInsights=window.appInsights||function(config){
-            function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
-        }({
-            instrumentationKey: '4e490421-c7a6-4a4a-85cf-295772ce0f52'
-        });
-
-        window.appInsights=appInsights;
-        appInsights.trackPageView();
-        
-    </script>
-
 </head>
 <body>
-    
-    
+
+
 
 <section class="page-header">
     <h1 class="project-name">Code scraps</h1>
@@ -44,8 +38,8 @@
     </a></p>
 </section>
 
-    <section class="main-content">
-        
+<section class="main-content">
+    
 <section itemscope="http://schema.org/TechArticle" itemtype="http://schema.org/TechArticle">
     <h1 itemprop="name">MVC 6 Absolute URLs</h1>
     <time itemprop="dateModified" datetime="2017-08-13T00:00:00">Sunday, 13 August 2017</time>
@@ -83,14 +77,14 @@
     @Url.Action("Demo", "MyController", null, Context.Request.Scheme, null)
 </pre>
     <p>
-        Gives me a full URL such as 
+        Gives me a full URL such as
         <b>http://localhost:1212/MyController/Demo</b>
     </p>
-    
+
     <p>
-        To make this a little easier, 
+        To make this a little easier,
         <a href="https://gist.github.com/Dkowald/383acd462242194024981fbe53a84980">here's a gist</a>
-        with overloads for 
+        with overloads for
         <b>Url.ActionAbsolute</b> and <b>Url.RouteUrlAbsolute</b>
         To use these, just add <i>Absolute</i> to the call
     </p>
@@ -100,32 +94,24 @@
     @Url.ActionAbsolute("Demo", "MyController")
 </pre>
 </section>
-        
-
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
-        this.page.url = "https://dkowald.github.io/docs/Gists/AbsoluteUrl.html";
-        this.page.identifier = "AbsoluteUrl";
-    };
-
-    (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://dkowald.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+    <script src="https://giscus.app/client.js"
+        data-repo="Dkowald/dkowald.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk2MDgzMDQzMQ=="
+        data-category="Comments"
+        data-category-id="DIC_kwDOA6Ay384CU4Ze"
+        data-mapping="url"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="preferred_color_scheme"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
-    </section>
 
-    
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</section>
 
-<script src="/res/site.js"></script>
-
-    
 </body>
 </html>

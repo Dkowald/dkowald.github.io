@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <meta name="pubdate" value="2007-01-01">
-
-    <title>Code scraps</title>
-
-    
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 
 <link rel="stylesheet" type="text/css" href="/css/normalize.css" media="screen">
 <link rel="stylesheet" type="text/css" href="/css/github-light.css" media="screen">
 
-<link rel="stylesheet" href="/res/site.css" type="text/css" />
+<link rel="stylesheet" href="/site/site.css" type="text/css" />
 
-<script src="https://use.fontawesome.com/749b637e03.js"></script>
+<script src="https://kit.fontawesome.com/ce6a7a476a.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js" defer></script>
+
+
+    <base href="/"/>
+
+        <meta name="pubdate" value="2019-01-01">
+
+    <title>Code scraps</title>
+
+    <script src="/sys.js"></script>
+
     
-
-        <script type="text/javascript">
-        var appInsights=window.appInsights||function(config){
-            function i(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s="AuthenticatedUserContext",h="start",c="stop",l="Track",a=l+"Event",v=l+"Page",y=u.createElement(o),r,f;y.src=config.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js";u.getElementsByTagName(o)[0].parentNode.appendChild(y);try{t.cookie=u.cookie}catch(p){}for(t.queue=[],t.version="1.0",r=["Event","Exception","Metric","PageView","Trace","Dependency"];r.length;)i("track"+r.pop());return i("set"+s),i("clear"+s),i(h+a),i(c+a),i(h+v),i(c+v),i("flush"),config.disableExceptionTracking||(r="onerror",i("_"+r),f=e[r],e[r]=function(config,i,u,e,o){var s=f&&f(config,i,u,e,o);return s!==!0&&t["_"+r](config,i,u,e,o),s}),t
-        }({
-            instrumentationKey: '4e490421-c7a6-4a4a-85cf-295772ce0f52'
-        });
-
-        window.appInsights=appInsights;
-        appInsights.trackPageView();
-        
-    </script>
-
 </head>
 <body>
+
+
 
 <section class="page-header">
     <h1 class="project-name">Code scraps</h1>
@@ -43,82 +39,82 @@
 </section>
 
 <section class="main-content">
-<div>
+    
+<div class="text-center">
+    <div>
     <h3>Whats new</h3>
-    <ol>
-        <li><time datetime="2023-03-15 00:00:00Z">Mar-15 2023</time>
-            Changing over to use <a href="">giscus</a> for comments</li>
-        <li>
-            
-            <a href="/docs/Gists/MvcExceptionErrors.html">
-                <time datetime="2017-10-07 00:00:00Z">Oct-07 2017</time>
-                : MVC 6 Exception return
+    <ol class="article-list">
+            <li>
 
-            </a>
-                <div>
-                    Using exceptions to return non-success results in MVC 6
-                </div>
-        </li>
-        <li>
-            
-            <a href="/docs/Gists/PocoControllers.html">
-                <time datetime="2017-09-01 00:00:00Z">Sep-01 2017</time>
-                : POCO ASP.NET Core controllers
+                <a href="docs/Gists/MvcExceptionErrors.html">
+                    <time datetime="2017-10-07 00:00:00Z">Oct-07 2017</time>
+                    : MVC 6 Exception return
 
-            </a>
-                <div>
-                    Using POCO Controllers with ASP.NET Core v2
-                </div>
-        </li>
-        <li>
-            
-            <a href="/docs/Gists/AbsoluteUrl.html">
-                <time datetime="2017-08-13 00:00:00Z">Aug-13 2017</time>
-                : MVC 6 Absolute URLs
+                </a>
+                    <div>
+                        Using exceptions to return non-success results in MVC 6
+                    </div>
+            </li>
+            <li>
 
-            </a>
-                <div>
-                    URL helpers for absolute url&#x27;s
-                </div>
-        </li>
-        <li>
-            
-            <a href="/docs/CodeStyle/ValueTuples.html">
-                <time datetime="2017-08-05 00:00:00Z">Aug-05 2017</time>
-                : Refactoring with C# 7 out var and value tuples
+                <a href="docs/Gists/PocoControllers.html">
+                    <time datetime="2017-09-01 00:00:00Z">Sept-01 2017</time>
+                    : POCO ASP.NET Core controllers
 
-            </a>
-                <div>
-                    C# 7 refactoring with value tuple&#x27;s
-                </div>
-        </li>
-        <li>
-            
-            <a href="/docs/Gists/ResponsiveHelpers.html">
-                <time datetime="2017-07-29 00:00:00Z">Jul-29 2017</time>
-                : Responsive helper classes
+                </a>
+                    <div>
+                        Using POCO Controllers with ASP.NET Core v2
+                    </div>
+            </li>
+            <li>
 
-            </a>
-                <div>
-                    Using responsive breakpoint classes for fine control of content visibility.
-                </div>
-        </li>
-        <li>
-            
-            <a href="/docs/Gists/CircularStack.html">
-                <time datetime="2017-06-15 00:00:00Z">Jun-15 2017</time>
-                : Gist - CircularStack
+                <a href="docs/Gists/AbsoluteUrl.html">
+                    <time datetime="2017-08-13 00:00:00Z">Aug-13 2017</time>
+                    : MVC 6 Absolute URLs
 
-            </a>
-                <div>
-                    A length limited stack in C#
-                </div>
-        </li>
+                </a>
+                    <div>
+                        URL helpers for absolute url&#x27;s
+                    </div>
+            </li>
+            <li>
+
+                <a href="docs/CodeStyle/ValueTuples.html">
+                    <time datetime="2017-08-05 00:00:00Z">Aug-05 2017</time>
+                    : Refactoring with C# 7 out var and value tuples
+
+                </a>
+                    <div>
+                        C# 7 refactoring with value tuple&#x27;s
+                    </div>
+            </li>
+            <li>
+
+                <a href="docs/Gists/ResponsiveHelpers.html">
+                    <time datetime="2017-07-29 00:00:00Z">July-29 2017</time>
+                    : Responsive helper classes
+
+                </a>
+                    <div>
+                        Using responsive breakpoint classes for fine control of content visibility.
+                    </div>
+            </li>
+            <li>
+
+                <a href="docs/Gists/CircularStack.html">
+                    <time datetime="2017-06-15 00:00:00Z">June-15 2017</time>
+                    : Gist - CircularStack
+
+                </a>
+                    <div>
+                        A length limited stack in C#
+                    </div>
+            </li>
     </ol>
 </div>
+</div>
 
-<!-- Giscus powered comments; backed by github discussions-->
-<script src="https://giscus.app/client.js"
+    <script src="https://giscus.app/client.js"
         data-repo="Dkowald/dkowald.github.io"
         data-repo-id="MDEwOlJlcG9zaXRvcnk2MDgzMDQzMQ=="
         data-category="Comments"
@@ -135,28 +131,7 @@
         async>
 </script>
 
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
-        this.page.url = "https://dkowald.github.io/index.html";
-        this.page.identifier = "index";
-    };
-
-    (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://dkowald.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<script id="dsq-count-scr" src="https://dkowald.disqus.com/count.js" async></script>
 </section>
 
-    
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-
-<script src="/res/site.js"></script>
-    
 </body>
 </html>
